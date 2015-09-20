@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="bbGrid.css" />
+
+		<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script type="text/javascript" src="bower_components/underscore/underscore-min.js"></script>
+		<script type="text/javascript" src="bower_components/backbone/backbone-min.js"></script>
+		<script type="text/javascript" src="bbGrid.js"></script>
+		<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<button class="btn btn-primary" type="button" data-target="#mymodal" data-toggle="modal">modal</button>
+			<div class="modal fade" data-backdrop='static' id="mymodal">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<div class="modal-body">
+							<div id=bbgrid></div>
+						</div>
+						<div class="modal-footer"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			try {
+				var test = $("#bbgrid");
+				var idIndex = 0;
+				var Contact = Backbone.Model.extend({});
+				var Contacts = Backbone.Collection.extend({
+					model: Contact
+				});
+				var contacts = new Contacts;
+				var person1 = new Contact({
+					id: idIndex++,
+					name: 'person1',
+					company: 'twitter',
+					email: '1@qq.com'
+				});
+				var person2 = new Contact({
+					id: idIndex++,
+					name: 'person2',
+					company: 'google',
+					email: '12@qq.com'
+				});
+				var person3 = new Contact({
+					id: idIndex++,
+					name: 'person3',
+					company: 'baidu',
+					email: '123@qq.com'
+				});
+				var person4 = new Contact({
+					id: idIndex++,
+					name: 'person4',
+					company: 'Mircosoft',
+					email: '1234@qq.com'
+				});
+				var person5 = new Contact({
+					id: idIndex++,
+					name: 'person5',
+					company: 'alibaba',
+					email: '12345@qq.com'
+				});
+				contacts.add([person1, person2, person3, person4, person5]);
+				var MyGrid = new bbGrid.View({
+					onRowClick: function() {
+						var index = this.selectedRows;
+						if (!_.isEmpty(index)) {
+							console.log(this.rowViews[index].model.get("company"));
+						} else {
+							console.log("nothing");
+						}
+					},
+					container: $('#bbgrid'),
+					collection: contacts,
+					colModel: [{
+						title: 'ID',
+						name: 'id',
+						sorttype: 'number'
+					}, {
+						title: 'Full Name',
+						name: 'name'
+					}, {
+						title: 'Company',
+						name: 'company'
+					}, {
+						title: 'Email',
+						name: 'email'
+					}],
+					enableSearch: true,
+					//rows:5
+				});
+			} catch (e) {
+				//TODO handle the exception
+				console.log(e.message);
+			}
+		</script>
+	</body>
+
+</html>
